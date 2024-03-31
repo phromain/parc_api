@@ -2,18 +2,22 @@ package resources;
 
 import Dto.ParcDetailDto;
 import Dto.ParcInfoDto;
-import entities.ParcEntity;
-import entities.RegionEntity;
-import entities.TypeParcEntity;
+import entities.*;
+import entrant.UrlReseauSociaux;
 import jakarta.inject.Inject;
+import jakarta.transaction.Transactional;
+import jakarta.validation.ConstraintViolationException;
+import jakarta.validation.Valid;
 import jakarta.ws.rs.*;
+import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
+import jakarta.ws.rs.core.UriInfo;
 import org.eclipse.microprofile.openapi.annotations.Operation;
 import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
-import repositories.ParcRepository;
-import repositories.RegionRepository;
-import repositories.TypeParcRepository;
+import repositories.*;
+
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,9 +30,14 @@ public class ParcResource {
     TypeParcRepository typeParcRepository;
     @Inject
     RegionRepository regionRepository;
+    @Inject
+    UrlReseauSociauxRepository urlReseauSociauxRepository;
+    @Inject
+    ReseauSociauxRepository reseauSociauxRepository;
 
 
-    @GET
+
+        @GET
     @Path("")
     @Produces(MediaType.APPLICATION_JSON)
     @Operation(summary = "Affiche la liste des parcs", description = "Retourne une liste de parc")
@@ -65,7 +74,7 @@ public class ParcResource {
     @GET
     @Path("/{idtype}/{idregion}")
     @Produces(MediaType.APPLICATION_JSON)
-    @Operation(summary = "Affiche la liste des parcs par type et region", description = "Retourne une liste de parc par type")
+    @Operation(summary = "Affiche la liste des parcs par type et region (0 en idtype ou region = tous)", description = "Retourne une liste de parc par type et region (0 en idtype ou region = tous)")
     @APIResponse(responseCode = "200", description = " Liste Parc")
     @APIResponse(responseCode = "404", description = "Region non trouvé")
     @APIResponse(responseCode = "404", description = "Type non trouvé")
@@ -101,6 +110,49 @@ public class ParcResource {
     }
 
 
+    @Transactional
+    @POST
+    @Path("/{idParc}/{idReseauSocial}")
+    @Produces(MediaType.TEXT_PLAIN)
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Operation(summary = "Crée un lien url pour un reseau social pour un parc", description = "Crée un lien url pour un reseau social pour un parc")
+    @APIResponse(responseCode = "201", description = " Lien url Créer")
+    @APIResponse(responseCode = "400", description = "Erreur indiquer ")
+    @APIResponse(responseCode = "404", description = "Cet identifiant n'existe pas de parc ou type ")
+    @APIResponse(responseCode = "500", description = "Une erreur interne est survenue")
+    public Response createUrlByReseauSocialByIdParc (@PathParam("idParc") Integer idParc, @PathParam("idReseauSocial") Integer idReseauSocial, @Valid UrlReseauSociaux urlReseauSociaux, @Context UriInfo uriInfo) {
+        try {
+            ParcEntity parc = parcRepository.findById(idParc);
+            System.out.println(parc);
+            if (parc == null) {
+                return Response.status(Response.Status.NOT_FOUND)
+                        .type(MediaType.TEXT_PLAIN)
+                        .entity("Cet identifiant de parc n'existe pas !")
+                        .build();
+            }
+            ReseauSociauxEntity reseauSociaux = reseauSociauxRepository.findById(idReseauSocial);
+            System.out.println(reseauSociaux);
+            if (reseauSociaux == null) {
+                return Response.status(Response.Status.NOT_FOUND)
+                        .type(MediaType.TEXT_PLAIN)
+                        .entity("Cet identifiant de reseau social n'existe pas !")
+                        .build();
+            }
+            UrlReseauSociauxEntity urlReseauSociauxEntity = new UrlReseauSociauxEntity(urlReseauSociaux,parc,reseauSociaux);
+            urlReseauSociauxRepository.persist(urlReseauSociauxEntity);
+            URI uri = uriInfo.getAbsolutePathBuilder().path(String.valueOf(urlReseauSociauxEntity.getId())).build();
+            return Response.created(uri).entity("Url " + reseauSociaux.getLibReseau()  +" Créer pour "+ parc.getNomParc())
+                    .build();
+        } catch (ConstraintViolationException e) {
+            return Response.status(Response.Status.BAD_REQUEST)
+                    .entity(e.getMessage())
+                    .build();
+        } catch (Exception e){
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+                    .entity("Une erreur est survenue ")
+                    .build();
+        }
+    }
 
 
 

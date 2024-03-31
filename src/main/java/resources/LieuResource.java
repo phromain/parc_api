@@ -78,9 +78,7 @@ public class LieuResource {
     public Response updateLieu (@PathParam("id") Integer id, @Valid Lieu lieu) {
         try {
             LieuEntity lieuEntity = lieuRepository.findById(id);
-            System.out.println(lieuEntity);
             RegionEntity regionEntity = regionRepository.findById(lieuEntity.getIdRegionEntity().getId());
-            System.out.println(regionEntity);
             if (lieuEntity == null){
                 return Response.status(Response.Status.NOT_FOUND)
                         .type(MediaType.TEXT_PLAIN)

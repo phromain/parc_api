@@ -4,10 +4,12 @@ import entrant.UrlReseauSociaux;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 
-@Data
+@Getter
+@Setter
 @Entity
 @Table(name = "url_reseau_sociaux")
 public class UrlReseauSociauxEntity {
@@ -34,9 +36,9 @@ public class UrlReseauSociauxEntity {
     //Contructs
 
     public UrlReseauSociauxEntity(UrlReseauSociaux urlReseauSociaux, ParcEntity parc, ReseauSociauxEntity reseauSociaux) {
-        this.urlReseau = urlReseau;
-        this.idParcEntity = idParcEntity;
-        this.idReseauSociauxEntity = idReseauSociauxEntity;
+        this.urlReseau = urlReseauSociaux.getUrlReseau();
+        this.idParcEntity = parc;
+        this.idReseauSociauxEntity = reseauSociaux;
     }
 
     public UrlReseauSociauxEntity() {
