@@ -12,18 +12,15 @@ public class Type {
     @Pattern(regexp = "^[\\p{L} -]+$", message = "Seules les lettres, les espaces et les tirets sont autorisés")
     private String libelleTypeParc;
 
-
-    public Type() {
-    }
-
     public Type(String libelleTypeParc) {
         this.libelleTypeParc = libelleTypeParc;
     }
 
-
-    public boolean typeValid() {
-        return libelleTypeParc != null && !libelleTypeParc.isEmpty();
+    public Type() {
     }
+
+
+
 }
 
 

@@ -1,5 +1,6 @@
 package entities;
 
+import entrant.Parking;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -21,4 +22,19 @@ public class ParkingEntity {
     @Column(name = "parking", nullable = false, length = 75)
     private String parking;
 
+    //Contructs
+
+    public ParkingEntity() {
+    }
+
+    public ParkingEntity(Parking parking) {
+        this.parking = parking.getParking();
+    }
+
+
+    // Methods
+
+    public void insertNewValues(Parking parking) {
+        this.parking = parking.getParking();
+    }
 }

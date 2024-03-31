@@ -130,7 +130,7 @@ public class TypeResource {
     @APIResponse(responseCode = "200", description = " Type Supprimé")
     @APIResponse(responseCode = "404", description = "Type non trouvé")
     @APIResponse(responseCode = "500", description = "Une erreur interne est survenue")
-    public Response deleteObjectif (@PathParam("id") Integer id) {
+    public Response deleteType (@PathParam("id") Integer id) {
         TypeParcEntity typeParc = typeParcRepository.findById(id);
         if (typeParc == null){
             return Response.status(Response.Status.NOT_FOUND)

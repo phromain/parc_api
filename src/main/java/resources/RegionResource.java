@@ -171,7 +171,7 @@ public class RegionResource {
     @APIResponse(responseCode = "200", description = " Région Supprimée")
     @APIResponse(responseCode = "404", description = "Région non trouvée")
     @APIResponse(responseCode = "500", description = "Une erreur interne est survenue")
-    public Response deleteObjectif (@PathParam("id") Integer id) {
+    public Response deleteRegion (@PathParam("id") Integer id) {
         RegionEntity region = regionRepository.findById(id);
         if (region == null){
             return Response.status(Response.Status.NOT_FOUND)

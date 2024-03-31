@@ -24,9 +24,5 @@ public class Region {
 
     // Methods
 
-    public boolean regionValid() {
-        return nomRegion != null && !nomRegion.isEmpty();
-    }
-
 
 }

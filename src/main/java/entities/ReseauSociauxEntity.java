@@ -1,5 +1,6 @@
 package entities;
 
+import entrant.ReseauSociaux;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
@@ -19,4 +20,17 @@ public class ReseauSociauxEntity {
     @Column(name = "lib_reseau", length = 250)
     private String libReseau;
 
+    //Contructs
+
+    public ReseauSociauxEntity() {
+    }
+
+    public ReseauSociauxEntity(ReseauSociaux reseauSociaux) {
+        this.libReseau = reseauSociaux.getLibReseau();
+    }
+
+    // Methods
+    public void insertNewValues(ReseauSociaux reseauSociaux) {
+        this.libReseau = reseauSociaux.getLibReseau();
+    }
 }

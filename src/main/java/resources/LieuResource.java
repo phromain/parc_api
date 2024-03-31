@@ -70,7 +70,7 @@ public class LieuResource {
     @Path("/{id}")
     @Produces(MediaType.TEXT_PLAIN)
     @Consumes(MediaType.APPLICATION_JSON)
-    @Operation(summary = "Modifie une lieu", description = "Modifie un lieu")
+    @Operation(summary = "Modifie un lieu", description = "Modifie un lieu")
     @APIResponse(responseCode = "200", description = " Lieu mis à jour")
     @APIResponse(responseCode = "400", description = "informations manquantes ou vide")
     @APIResponse(responseCode = "404", description = "Lieu non trouvé")
@@ -78,15 +78,17 @@ public class LieuResource {
     public Response updateLieu (@PathParam("id") Integer id, @Valid Lieu lieu) {
         try {
             LieuEntity lieuEntity = lieuRepository.findById(id);
-            RegionEntity regionEntity = regionRepository.findById(lieuEntity.getId());
+            System.out.println(lieuEntity);
+            RegionEntity regionEntity = regionRepository.findById(lieuEntity.getIdRegionEntity().getId());
+            System.out.println(regionEntity);
             if (lieuEntity == null){
                 return Response.status(Response.Status.NOT_FOUND)
                         .type(MediaType.TEXT_PLAIN)
-                        .entity("Région non trouvé")
+                        .entity("Cet identifiant n'existe pas !")
                         .build();
             }
             lieuEntity.insertNewValues(lieu,regionEntity);
-            return Response.ok().entity("Région mise à jour")
+            return Response.ok().entity("Lieu mis à jour")
                     .build();
         } catch (ConstraintViolationException e) {
             return Response.status(Response.Status.BAD_REQUEST)
@@ -108,12 +110,12 @@ public class LieuResource {
     @APIResponse(responseCode = "200", description = " Lieu Supprimé")
     @APIResponse(responseCode = "404", description = "Lieu non trouvé")
     @APIResponse(responseCode = "500", description = "Une erreur interne est survenue")
-    public Response deleteObjectif (@PathParam("id") Integer id) {
+    public Response deleteLieu (@PathParam("id") Integer id) {
         LieuEntity lieu = lieuRepository.findById(id);
         if (lieu == null){
             return Response.status(Response.Status.NOT_FOUND)
                     .type(MediaType.TEXT_PLAIN)
-                    .entity("Lieu non trouvé")
+                    .entity("Cet identifiant n'existe pas !")
                     .build();
         }
         try {
