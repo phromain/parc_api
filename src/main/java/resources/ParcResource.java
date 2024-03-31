@@ -22,10 +22,8 @@ public class ParcResource {
 
     @Inject
     ParcRepository parcRepository;
-
     @Inject
     TypeParcRepository typeParcRepository;
-
     @Inject
     RegionRepository regionRepository;
 
@@ -101,6 +99,9 @@ public class ParcResource {
         }
         return Response.ok(listParcDto).build();
     }
+
+
+
 
 
 

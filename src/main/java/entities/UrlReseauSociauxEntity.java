@@ -1,13 +1,13 @@
 package entities;
 
+import entrant.UrlReseauSociaux;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
-@Getter
-@Setter
+
+@Data
 @Entity
 @Table(name = "url_reseau_sociaux")
 public class UrlReseauSociauxEntity {
@@ -31,4 +31,22 @@ public class UrlReseauSociauxEntity {
     @JoinColumn(name = "id_reseau_sociaux", nullable = false)
     private ReseauSociauxEntity idReseauSociauxEntity;
 
+    //Contructs
+
+    public UrlReseauSociauxEntity(UrlReseauSociaux urlReseauSociaux, ParcEntity parc, ReseauSociauxEntity reseauSociaux) {
+        this.urlReseau = urlReseau;
+        this.idParcEntity = idParcEntity;
+        this.idReseauSociauxEntity = idReseauSociauxEntity;
+    }
+
+    public UrlReseauSociauxEntity() {
+    }
+
+    // Methods
+    public void insertNewValues(UrlReseauSociaux urlReseauSociaux, ParcEntity parc, ReseauSociauxEntity reseauSociaux) {
+        this.urlReseau = urlReseauSociaux.getUrlReseau();
+        this.idParcEntity = parc;
+        this.idReseauSociauxEntity = reseauSociaux;
+
+    }
 }
