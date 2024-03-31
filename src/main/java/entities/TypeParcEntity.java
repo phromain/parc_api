@@ -1,19 +1,19 @@
 package entities;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import entrant.Type;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
-@Getter
-@Setter
+
+@Data
 @Entity
 @Table(name = "type_parc")
 public class TypeParcEntity {
+
+    // Attributs
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "id_type", nullable = false)
     private Integer id;
@@ -27,5 +27,31 @@ public class TypeParcEntity {
     @NotNull
     @Column(name = "slug_type", nullable = false, length = 20)
     private String slugType;
+
+    // contructs
+
+    public TypeParcEntity(Type type) {
+        this.libelleTypeParc = type.getLibelleTypeParc();
+        this.slugType = toSlug(type.getLibelleTypeParc());
+    }
+
+    public TypeParcEntity() {
+    }
+
+    // Methods
+    public static String toSlug(String input) {
+        String normalized = java.text.Normalizer.normalize(input, java.text.Normalizer.Form.NFD);
+        String accentRemoved = normalized.replaceAll("\\p{InCombiningDiacriticalMarks}+", "");
+        String lowerCased = accentRemoved.toLowerCase();
+        String nonAlphanumericRemoved = lowerCased.replaceAll("[^a-z0-9]", "-");
+        String slug = nonAlphanumericRemoved.replaceAll("-+", "-");
+        return slug;
+    }
+
+    public void insertNewValues(Type type) {
+        this.libelleTypeParc = type.getLibelleTypeParc();
+        this.slugType = toSlug(type.getLibelleTypeParc());
+    }
+
 
 }

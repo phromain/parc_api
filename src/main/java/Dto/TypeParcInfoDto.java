@@ -15,4 +15,6 @@ public class TypeParcInfoDto {
         this.libelleTypeParc = typeParc.getLibelleTypeParc();
         this.slugType = typeParc.getSlugType();
     }
+
+
 }
