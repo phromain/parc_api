@@ -1,4 +1,4 @@
-package entrant;
+package DtoIn;
 
 
 import jakarta.validation.constraints.NotBlank;
@@ -8,7 +8,7 @@ import jakarta.validation.constraints.Size;
 import lombok.Data;
 
 @Data
-public class ReseauSociaux {
+public class ReseauSociauxDto {
 
 
     @Size(max = 250)
@@ -19,10 +19,10 @@ public class ReseauSociaux {
 
     //Contructs
 
-    public ReseauSociaux() {
+    public ReseauSociauxDto() {
     }
 
-    public ReseauSociaux(String libReseau) {
+    public ReseauSociauxDto(String libReseau) {
         this.libReseau = libReseau;
     }
 }

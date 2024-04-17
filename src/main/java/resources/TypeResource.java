@@ -1,8 +1,8 @@
 package resources;
 
-import Dto.TypeParcInfoDto;
+import DtoOut.TypeParcInfoDto;
 import entities.TypeParcEntity;
-import entrant.Type;
+import DtoIn.TypeDto;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import jakarta.validation.ConstraintViolationException;
@@ -70,7 +70,7 @@ public class TypeResource {
     @APIResponse(responseCode = "201", description = " Type Créer")
     @APIResponse(responseCode = "400", description = "Erreur indiquer ")
     @APIResponse(responseCode = "500", description = "Une erreur interne est survenue")
-    public Response createType (@Valid Type type, @Context UriInfo uriInfo) {
+    public Response createType (@Valid TypeDto type, @Context UriInfo uriInfo) {
         try {
             TypeParcEntity typeParc = new TypeParcEntity(type);
             typeParcRepository.persist(typeParc);
@@ -98,7 +98,7 @@ public class TypeResource {
     @APIResponse(responseCode = "400", description = "Erreur indiquer ")
     @APIResponse(responseCode = "404", description = "Type non trouvé")
     @APIResponse(responseCode = "500", description = "Une erreur interne est survenue")
-    public Response updateTypeParc (@PathParam("id") Integer id, @Valid Type type) {
+    public Response updateTypeParc (@PathParam("id") Integer id, @Valid TypeDto type) {
         try {
             TypeParcEntity typeParc = typeParcRepository.findById(id);
             if (typeParc == null){

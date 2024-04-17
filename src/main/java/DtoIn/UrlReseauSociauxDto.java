@@ -1,11 +1,11 @@
-package entrant;
+package DtoIn;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 @Data
-public class UrlReseauSociaux {
+public class UrlReseauSociauxDto {
 
     @NotNull(message = "Le type ne peut pas être nulle")
     @NotBlank(message = "Le type ne peut pas être vide")
@@ -13,9 +13,9 @@ public class UrlReseauSociaux {
 
     //Contructs
 
-    public UrlReseauSociaux() {
+    public UrlReseauSociauxDto() {
     }
-    public UrlReseauSociaux(String urlReseau) {
+    public UrlReseauSociauxDto(String urlReseau) {
         this.urlReseau = urlReseau;
     }
 }

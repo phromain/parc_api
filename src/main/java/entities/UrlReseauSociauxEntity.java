@@ -1,6 +1,6 @@
 package entities;
 
-import entrant.UrlReseauSociaux;
+import DtoIn.UrlReseauSociauxDto;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -35,8 +35,8 @@ public class UrlReseauSociauxEntity {
 
     //Contructs
 
-    public UrlReseauSociauxEntity(UrlReseauSociaux urlReseauSociaux, ParcEntity parc, ReseauSociauxEntity reseauSociaux) {
-        this.urlReseau = urlReseauSociaux.getUrlReseau();
+    public UrlReseauSociauxEntity(UrlReseauSociauxDto urlReseauSociauxDto, ParcEntity parc, ReseauSociauxEntity reseauSociaux) {
+        this.urlReseau = urlReseauSociauxDto.getUrlReseau();
         this.idParcEntity = parc;
         this.idReseauSociauxEntity = reseauSociaux;
     }
@@ -45,8 +45,8 @@ public class UrlReseauSociauxEntity {
     }
 
     // Methods
-    public void insertNewValues(UrlReseauSociaux urlReseauSociaux, ParcEntity parc, ReseauSociauxEntity reseauSociaux) {
-        this.urlReseau = urlReseauSociaux.getUrlReseau();
+    public void insertNewValues(UrlReseauSociauxDto urlReseauSociauxDto, ParcEntity parc, ReseauSociauxEntity reseauSociaux) {
+        this.urlReseau = urlReseauSociauxDto.getUrlReseau();
         this.idParcEntity = parc;
         this.idReseauSociauxEntity = reseauSociaux;
 

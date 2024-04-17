@@ -1,6 +1,6 @@
 package entities;
 
-import entrant.Region;
+import DtoIn.RegionDto;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -31,9 +31,9 @@ public class RegionEntity {
 
     // contructs
 
-    public RegionEntity(Region region) {
-        this.nomRegion = region.getNomRegion();
-        this.slugRegion = toSlug(region.getNomRegion());
+    public RegionEntity(RegionDto regionDto) {
+        this.nomRegion = regionDto.getNomRegion();
+        this.slugRegion = toSlug(regionDto.getNomRegion());
     }
 
     public RegionEntity() {
@@ -49,9 +49,9 @@ public class RegionEntity {
         return slug;
     }
 
-    public void insertNewValues(Region region) {
-        this.nomRegion = region.getNomRegion();
-        this.slugRegion = toSlug(region.getNomRegion());
+    public void insertNewValues(RegionDto regionDto) {
+        this.nomRegion = regionDto.getNomRegion();
+        this.slugRegion = toSlug(regionDto.getNomRegion());
     }
 
 

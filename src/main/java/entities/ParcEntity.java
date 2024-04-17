@@ -1,5 +1,6 @@
 package entities;
 
+import DtoIn.ParcDto;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -135,4 +136,50 @@ public class ParcEntity {
 
     @OneToMany(mappedBy = "idParcEntity")
     private Set<ClasserEntity> classerEntities = new HashSet<>();
+
+
+    // Contructs
+    public ParcEntity() {
+    }
+
+    public ParcEntity(ParcDto parcDto, LieuEntity lieuEntity, ParkingEntity parkingEntity ) {
+        this.nomParc = parcDto.getNomParc();
+        this.presentation = parcDto.getPresentation();
+        this.slug = toSlug(parcDto.getNomParc());
+        this.pointRestauration = parcDto.getPointRestauration();
+        this.boutique = parcDto.getBoutique();
+        this.adresse = parcDto.getAdresse();
+        this.longitudeParc = parcDto.getLongitudeParc();
+        this.lattitudeParc = parcDto.getLattitudeParc();
+        this.siteInternet = parcDto.getSiteInternet();
+        this.numeroTelParc = parcDto.getNumeroTelParc();
+        this.urlPlanParc = parcDto.getUrlPlanParc();
+        this.urlImgParcPrez = parcDto.getUrlImgParcPrez();
+        this.sejour = parcDto.getSejour();
+        this.heureOuverture = parcDto.getHeureOuverture();
+        this.heureFermeture = parcDto.getHeureFermeture();
+        this.dateOuverture = parcDto.getDateOuverture();
+        this.dateFermeture = parcDto.getDateFermeture();
+        this.urlCalendrier = parcDto.getUrlCalendrier();
+        this.urlAffiliation = parcDto.getUrlAffiliation();
+        this.prixAdulte = parcDto.getPrixAdulte();
+        this.prixEnfant = parcDto.getPrixEnfant();
+        this.gratuite = parcDto.getGratuite();
+        this.transportCommun = parcDto.getTransportCommun();
+        this.idLieuEntity = lieuEntity;
+        this.idParkingEntity = parkingEntity;
+    }
+
+
+    // Methods
+    public static String toSlug(String input) {
+        String normalized = java.text.Normalizer.normalize(input, java.text.Normalizer.Form.NFD);
+        String accentRemoved = normalized.replaceAll("\\p{InCombiningDiacriticalMarks}+", "");
+        String lowerCased = accentRemoved.toLowerCase();
+        String nonAlphanumericRemoved = lowerCased.replaceAll("[^a-z0-9]", "-");
+        String slug = nonAlphanumericRemoved.replaceAll("-+", "-");
+        return slug;
+    }
+
+
 }

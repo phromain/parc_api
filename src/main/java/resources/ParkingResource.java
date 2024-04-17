@@ -1,8 +1,8 @@
 package resources;
 
-import Dto.ParkingInfoDto;
+import DtoOut.ParkingInfoDto;
 import entities.ParkingEntity;
-import entrant.Parking;
+import DtoIn.ParkingDto;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import jakarta.validation.ConstraintViolationException;
@@ -66,9 +66,9 @@ public class ParkingResource {
     @APIResponse(responseCode = "201", description = " Parking Créer")
     @APIResponse(responseCode = "400", description = "Erreur indiquer ")
     @APIResponse(responseCode = "500", description = "Une erreur interne est survenue")
-    public Response createParking (@Valid Parking parking, @Context UriInfo uriInfo) {
+    public Response createParking (@Valid ParkingDto parkingDto, @Context UriInfo uriInfo) {
         try {
-            ParkingEntity parkingEntity = new ParkingEntity(parking);
+            ParkingEntity parkingEntity = new ParkingEntity(parkingDto);
             parkingRepository.persist(parkingEntity);
             URI uri = uriInfo.getAbsolutePathBuilder().path(String.valueOf(parkingEntity.getId())).build();
             return Response.created(uri).entity("Parking Créer")
@@ -94,7 +94,7 @@ public class ParkingResource {
     @APIResponse(responseCode = "400", description = "Erreur indiquer ")
     @APIResponse(responseCode = "404", description = "Parking non trouvé")
     @APIResponse(responseCode = "500", description = "Une erreur interne est survenue")
-    public Response updateParking (@PathParam("id") Integer id, @Valid Parking parking) {
+    public Response updateParking (@PathParam("id") Integer id, @Valid ParkingDto parkingDto) {
         try {
             ParkingEntity parkingEntity = parkingRepository.findById(id);
             if (parkingEntity == null){
@@ -103,7 +103,7 @@ public class ParkingResource {
                         .entity("Parking non trouvé")
                         .build();
             }
-            parkingEntity.insertNewValues(parking);
+            parkingEntity.insertNewValues(parkingDto);
             return Response.ok().entity("Parking mis à jour")
                     .build();
         } catch (ConstraintViolationException e) {

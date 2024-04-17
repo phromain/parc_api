@@ -1,6 +1,6 @@
 package entities;
 
-import entrant.ReseauSociaux;
+import DtoIn.ReseauSociauxDto;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
@@ -26,12 +26,12 @@ public class ReseauSociauxEntity {
     public ReseauSociauxEntity() {
     }
 
-    public ReseauSociauxEntity(ReseauSociaux reseauSociaux) {
-        this.libReseau = reseauSociaux.getLibReseau();
+    public ReseauSociauxEntity(ReseauSociauxDto reseauSociauxDto) {
+        this.libReseau = reseauSociauxDto.getLibReseau();
     }
 
     // Methods
-    public void insertNewValues(ReseauSociaux reseauSociaux) {
-        this.libReseau = reseauSociaux.getLibReseau();
+    public void insertNewValues(ReseauSociauxDto reseauSociauxDto) {
+        this.libReseau = reseauSociauxDto.getLibReseau();
     }
 }

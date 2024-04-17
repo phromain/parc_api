@@ -1,4 +1,4 @@
-package Dto;
+package DtoOut;
 
 import entities.TypeParcEntity;
 import lombok.Data;

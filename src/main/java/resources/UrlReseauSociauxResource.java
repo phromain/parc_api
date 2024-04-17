@@ -1,11 +1,10 @@
 package resources;
 
-import Dto.UrlReseauSociauxInfoDto;
+import DtoOut.UrlReseauSociauxInfoDto;
 import entities.ParcEntity;
 import entities.ReseauSociauxEntity;
 import entities.UrlReseauSociauxEntity;
-import entities.UrlReseauSociauxEntity;
-import entrant.UrlReseauSociaux;
+import DtoIn.UrlReseauSociauxDto;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import jakarta.validation.ConstraintViolationException;
@@ -79,7 +78,7 @@ public class UrlReseauSociauxResource {
     @APIResponse(responseCode = "400", description = "Erreur indiquer ")
     @APIResponse(responseCode = "404", description = "Url Reseau Social non trouvé")
     @APIResponse(responseCode = "500", description = "Une erreur interne est survenue")
-    public Response updateUrlReseauSociaux (@PathParam("id") Integer id, @Valid UrlReseauSociaux urlReseauSociaux) {
+    public Response updateUrlReseauSociaux (@PathParam("id") Integer id, @Valid UrlReseauSociauxDto urlReseauSociauxDto) {
         try {
             UrlReseauSociauxEntity urlReseauSociauxEntity = urlReseauSociauxRepository.findById(id);
             ParcEntity parcEntity = parcRepository.findById(urlReseauSociauxEntity.getIdParcEntity().getId());
@@ -90,7 +89,7 @@ public class UrlReseauSociauxResource {
                         .entity("Url Reseau Social non trouvé")
                         .build();
             }
-            urlReseauSociauxEntity.insertNewValues(urlReseauSociaux, parcEntity, reseauSociauxEntity);
+            urlReseauSociauxEntity.insertNewValues(urlReseauSociauxDto, parcEntity, reseauSociauxEntity);
             return Response.ok().entity("Url Reseau Social mis à jour")
                     .build();
         } catch (ConstraintViolationException e) {

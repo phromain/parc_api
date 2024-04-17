@@ -1,6 +1,6 @@
 package entities;
 
-import entrant.Lieu;
+import DtoIn.LieuDto;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -42,17 +42,17 @@ public class LieuEntity {
     public LieuEntity() {
     }
 
-    public LieuEntity(Lieu lieu, RegionEntity region) {
-        this.ville = lieu.getVille();
-        this.codePostal = lieu.getCodePostal();
-        this.codeInsee = lieu.getCodeInsee();
+    public LieuEntity(LieuDto lieuDto, RegionEntity region) {
+        this.ville = lieuDto.getVille();
+        this.codePostal = lieuDto.getCodePostal();
+        this.codeInsee = lieuDto.getCodeInsee();
         this.idRegionEntity = region;
     }
 
-    public void insertNewValues(Lieu lieu, RegionEntity region) {
-        this.ville = lieu.getVille();
-        this.codePostal = lieu.getCodePostal();
-        this.codeInsee = lieu.getCodeInsee();
+    public void insertNewValues(LieuDto lieuDto, RegionEntity region) {
+        this.ville = lieuDto.getVille();
+        this.codePostal = lieuDto.getCodePostal();
+        this.codeInsee = lieuDto.getCodeInsee();
         this.idRegionEntity = region;
     }
 

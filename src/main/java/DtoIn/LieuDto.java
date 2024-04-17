@@ -1,4 +1,4 @@
-package entrant;
+package DtoIn;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -7,7 +7,7 @@ import jakarta.validation.constraints.Pattern;
 import lombok.Data;
 
 @Data
-public class Lieu {
+public class LieuDto {
     // Attributs
 
     @Size(max = 250)
@@ -33,13 +33,13 @@ public class Lieu {
 
 
     // Contructs
-    public Lieu(String ville, String codePostal, String codeInsee) {
+    public LieuDto(String ville, String codePostal, String codeInsee) {
         this.ville = ville;
         this.codePostal = codePostal;
         this.codeInsee = codeInsee;
     }
 
-    public Lieu() {
+    public LieuDto() {
     }
 
 

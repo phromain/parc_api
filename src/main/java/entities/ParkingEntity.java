@@ -1,6 +1,6 @@
 package entities;
 
-import entrant.Parking;
+import DtoIn.ParkingDto;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -27,14 +27,14 @@ public class ParkingEntity {
     public ParkingEntity() {
     }
 
-    public ParkingEntity(Parking parking) {
-        this.parking = parking.getParking();
+    public ParkingEntity(ParkingDto parkingDto) {
+        this.parking = parkingDto.getParking();
     }
 
 
     // Methods
 
-    public void insertNewValues(Parking parking) {
-        this.parking = parking.getParking();
+    public void insertNewValues(ParkingDto parkingDto) {
+        this.parking = parkingDto.getParking();
     }
 }

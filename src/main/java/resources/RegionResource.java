@@ -1,10 +1,10 @@
 package resources;
 
-import Dto.RegionInfoDto;
+import DtoOut.RegionInfoDto;
 import entities.LieuEntity;
 import entities.RegionEntity;
-import entrant.Lieu;
-import entrant.Region;
+import DtoIn.LieuDto;
+import DtoIn.RegionDto;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import jakarta.validation.ConstraintViolationException;
@@ -75,11 +75,11 @@ public class RegionResource {
     @APIResponse(responseCode = "201", description = " Région Créer")
     @APIResponse(responseCode = "400", description = "Erreur indiquer ")
     @APIResponse(responseCode = "500", description = "Une erreur interne est survenue")
-    public Response createRegion (@Valid Region region, @Context UriInfo uriInfo) {
+    public Response createRegion (@Valid RegionDto regionDto, @Context UriInfo uriInfo) {
         try {
-            RegionEntity regionEntity = new RegionEntity(region);
+            RegionEntity regionEntity = new RegionEntity(regionDto);
             regionRepository.persist(regionEntity);
-            URI uri = uriInfo.getAbsolutePathBuilder().path(String.valueOf(region.getNomRegion())).build();
+            URI uri = uriInfo.getAbsolutePathBuilder().path(String.valueOf(regionDto.getNomRegion())).build();
             return Response.created(uri).entity("Région Créer")
                     .build();
         } catch (ConstraintViolationException e) {
@@ -103,7 +103,7 @@ public class RegionResource {
     @APIResponse(responseCode = "400", description = "Erreur indiquer ")
     @APIResponse(responseCode = "404", description = "Cet identifiant n'existe pas ")
     @APIResponse(responseCode = "500", description = "Une erreur interne est survenue")
-    public Response createLieuByIdRegion (@PathParam("id") Integer idRegion, @Valid Lieu lieu, @Context UriInfo uriInfo) {
+    public Response createLieuByIdRegion (@PathParam("id") Integer idRegion, @Valid LieuDto lieuDto, @Context UriInfo uriInfo) {
         try {
             RegionEntity region = regionRepository.findById(idRegion);
             if (region == null) {
@@ -112,7 +112,7 @@ public class RegionResource {
                         .entity("Cet identifiant n'existe pas !")
                         .build();
             }
-            LieuEntity lieuEntity = new LieuEntity(lieu, region);
+            LieuEntity lieuEntity = new LieuEntity(lieuDto, region);
             lieuRepository.persist(lieuEntity);
             URI uri = uriInfo.getAbsolutePathBuilder().path(String.valueOf(lieuEntity.getId())).build();
             return Response.created(uri).entity("Lieu Créer")
@@ -140,7 +140,7 @@ public class RegionResource {
     @APIResponse(responseCode = "400", description = "Erreur indiquer ")
     @APIResponse(responseCode = "404", description = "Région non trouvé")
     @APIResponse(responseCode = "500", description = "Une erreur interne est survenue")
-    public Response updateRegion (@PathParam("id") Integer id, @Valid Region region) {
+    public Response updateRegion (@PathParam("id") Integer id, @Valid RegionDto regionDto) {
         try {
             RegionEntity regionEntity = regionRepository.findById(id);
             if (regionEntity == null){
@@ -149,7 +149,7 @@ public class RegionResource {
                         .entity("Région non trouvé")
                         .build();
             }
-            regionEntity.insertNewValues(region);
+            regionEntity.insertNewValues(regionDto);
             return Response.ok().entity("Région mise à jour")
                     .build();
         } catch (ConstraintViolationException e) {

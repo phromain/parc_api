@@ -1,6 +1,6 @@
 package entities;
 
-import entrant.Type;
+import DtoIn.TypeDto;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -32,7 +32,7 @@ public class TypeParcEntity {
 
     // contructs
 
-    public TypeParcEntity(Type type) {
+    public TypeParcEntity(TypeDto type) {
         this.libelleTypeParc = type.getLibelleTypeParc();
         this.slugType = toSlug(type.getLibelleTypeParc());
     }
@@ -50,7 +50,7 @@ public class TypeParcEntity {
         return slug;
     }
 
-    public void insertNewValues(Type type) {
+    public void insertNewValues(TypeDto type) {
         this.libelleTypeParc = type.getLibelleTypeParc();
         this.slugType = toSlug(type.getLibelleTypeParc());
     }

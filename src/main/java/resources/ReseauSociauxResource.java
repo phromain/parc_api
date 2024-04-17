@@ -1,8 +1,8 @@
 package resources;
 
-import Dto.ReseauSociauxInfoDto;
+import DtoOut.ReseauSociauxInfoDto;
 import entities.ReseauSociauxEntity;
-import entrant.ReseauSociaux;
+import DtoIn.ReseauSociauxDto;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import jakarta.validation.ConstraintViolationException;
@@ -69,9 +69,9 @@ public class ReseauSociauxResource {
     @APIResponse(responseCode = "201", description = " ReseauSociaux Créer")
     @APIResponse(responseCode = "400", description = "Erreur indiquer ")
     @APIResponse(responseCode = "500", description = "Une erreur interne est survenue")
-    public Response createReseauSociaux(@Valid ReseauSociaux reseauSociaux, @Context UriInfo uriInfo) {
+    public Response createReseauSociaux(@Valid ReseauSociauxDto reseauSociauxDto, @Context UriInfo uriInfo) {
         try {
-            ReseauSociauxEntity reseauSociauxEntity = new ReseauSociauxEntity(reseauSociaux);
+            ReseauSociauxEntity reseauSociauxEntity = new ReseauSociauxEntity(reseauSociauxDto);
             reseauSociauxRepository.persist(reseauSociauxEntity);
             URI uri = uriInfo.getAbsolutePathBuilder().path(String.valueOf(reseauSociauxEntity.getId())).build();
             return Response.created(uri).entity("ReseauSociaux Créer")
@@ -97,7 +97,7 @@ public class ReseauSociauxResource {
     @APIResponse(responseCode = "400", description = "Erreur indiquer ")
     @APIResponse(responseCode = "404", description = "ReseauSociaux non trouvé")
     @APIResponse(responseCode = "500", description = "Une erreur interne est survenue")
-    public Response updateReseauSociaux(@PathParam("id") Integer id, @Valid ReseauSociaux reseauSociaux) {
+    public Response updateReseauSociaux(@PathParam("id") Integer id, @Valid ReseauSociauxDto reseauSociauxDto) {
         try {
             ReseauSociauxEntity reseauSociauxEntity = reseauSociauxRepository.findById(id);
             if (reseauSociauxEntity == null) {
@@ -106,7 +106,7 @@ public class ReseauSociauxResource {
                         .entity("ReseauSociaux non trouvé")
                         .build();
             }
-            reseauSociauxEntity.insertNewValues(reseauSociaux);
+            reseauSociauxEntity.insertNewValues(reseauSociauxDto);
             return Response.ok().entity("ReseauSociaux mis à jour")
                     .build();
         } catch (ConstraintViolationException e) {

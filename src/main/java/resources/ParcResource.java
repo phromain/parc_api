@@ -1,9 +1,10 @@
 package resources;
 
-import Dto.ParcDetailDto;
-import Dto.ParcInfoDto;
+import DtoOut.ParcDetailDto;
+import DtoOut.ParcInfoDto;
 import entities.*;
-import entrant.UrlReseauSociaux;
+import DtoIn.ParcDto;
+import DtoIn.UrlReseauSociauxDto;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import jakarta.validation.ConstraintViolationException;
@@ -34,6 +35,10 @@ public class ParcResource {
     UrlReseauSociauxRepository urlReseauSociauxRepository;
     @Inject
     ReseauSociauxRepository reseauSociauxRepository;
+    @Inject
+    LieuRepository lieuRepository;
+    @Inject
+    ParkingRepository parkingRepository;
 
 
 
@@ -120,10 +125,9 @@ public class ParcResource {
     @APIResponse(responseCode = "400", description = "Erreur indiquer ")
     @APIResponse(responseCode = "404", description = "Cet identifiant n'existe pas de parc ou type ")
     @APIResponse(responseCode = "500", description = "Une erreur interne est survenue")
-    public Response createUrlByReseauSocialByIdParc (@PathParam("idParc") Integer idParc, @PathParam("idReseauSocial") Integer idReseauSocial, @Valid UrlReseauSociaux urlReseauSociaux, @Context UriInfo uriInfo) {
+    public Response createUrlByReseauSocialByIdParc (@PathParam("idParc") Integer idParc, @PathParam("idReseauSocial") Integer idReseauSocial, @Valid UrlReseauSociauxDto urlReseauSociauxDto, @Context UriInfo uriInfo) {
         try {
             ParcEntity parc = parcRepository.findById(idParc);
-            System.out.println(parc);
             if (parc == null) {
                 return Response.status(Response.Status.NOT_FOUND)
                         .type(MediaType.TEXT_PLAIN)
@@ -131,14 +135,13 @@ public class ParcResource {
                         .build();
             }
             ReseauSociauxEntity reseauSociaux = reseauSociauxRepository.findById(idReseauSocial);
-            System.out.println(reseauSociaux);
             if (reseauSociaux == null) {
                 return Response.status(Response.Status.NOT_FOUND)
                         .type(MediaType.TEXT_PLAIN)
                         .entity("Cet identifiant de reseau social n'existe pas !")
                         .build();
             }
-            UrlReseauSociauxEntity urlReseauSociauxEntity = new UrlReseauSociauxEntity(urlReseauSociaux,parc,reseauSociaux);
+            UrlReseauSociauxEntity urlReseauSociauxEntity = new UrlReseauSociauxEntity(urlReseauSociauxDto,parc,reseauSociaux);
             urlReseauSociauxRepository.persist(urlReseauSociauxEntity);
             URI uri = uriInfo.getAbsolutePathBuilder().path(String.valueOf(urlReseauSociauxEntity.getId())).build();
             return Response.created(uri).entity("Url " + reseauSociaux.getLibReseau()  +" Créer pour "+ parc.getNomParc())
@@ -154,6 +157,47 @@ public class ParcResource {
         }
     }
 
+    @Transactional
+    @POST
+    @Path("/{idLieu}/{idParking}")
+    @Produces(MediaType.TEXT_PLAIN)
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Operation(summary = "Crée un parc parc son idLieu et idParking", description = "Crée un parc parc son idLieu et idParking")
+    @APIResponse(responseCode = "201", description = " Parc Créer")
+    @APIResponse(responseCode = "400", description = "Erreur indiquer ")
+    @APIResponse(responseCode = "404", description = "Cet identifiant n'existe pas de lieu ou parking ")
+    @APIResponse(responseCode = "500", description = "Une erreur interne est survenue")
+    public Response createParcByTypeByLieu (@PathParam("idLieu") Integer idLieu, @PathParam("idParking") Integer idParking, @Valid ParcDto parcDto, @Context UriInfo uriInfo) {
+        try {
+            LieuEntity lieuEntity = lieuRepository.findById(idLieu);
+            if (lieuEntity == null) {
+                return Response.status(Response.Status.NOT_FOUND)
+                        .type(MediaType.TEXT_PLAIN)
+                        .entity("Cet identifiant de lieu n'existe pas !")
+                        .build();
+            }
+            ParkingEntity parkingEntity = parkingRepository.findById(idParking);
+            if (parkingEntity == null) {
+                return Response.status(Response.Status.NOT_FOUND)
+                        .type(MediaType.TEXT_PLAIN)
+                        .entity("Cet identifiant de parking n'existe pas !")
+                        .build();
+            }
+            ParcEntity parcEntity = new ParcEntity(parcDto,lieuEntity,parkingEntity);
+            parcRepository.persist(parcEntity);
+            URI uri = uriInfo.getAbsolutePathBuilder().path(String.valueOf(parcEntity.getId())).build();
+            return Response.created(uri).entity(" Parc Créer :"+ parcEntity.getNomParc())
+                    .build();
+        } catch (ConstraintViolationException e) {
+            return Response.status(Response.Status.BAD_REQUEST)
+                    .entity(e.getMessage())
+                    .build();
+        } catch (Exception e){
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+                    .entity("Une erreur est survenue ")
+                    .build();
+        }
+    }
 
 
 

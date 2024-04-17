@@ -1,9 +1,9 @@
 package resources;
 
-import Dto.LieuInfoDto;
+import DtoOut.LieuInfoDto;
 import entities.LieuEntity;
 import entities.RegionEntity;
-import entrant.Lieu;
+import DtoIn.LieuDto;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import jakarta.validation.ConstraintViolationException;
@@ -75,7 +75,7 @@ public class LieuResource {
     @APIResponse(responseCode = "400", description = "informations manquantes ou vide")
     @APIResponse(responseCode = "404", description = "Lieu non trouvé")
     @APIResponse(responseCode = "500", description = "Une erreur interne est survenue")
-    public Response updateLieu (@PathParam("id") Integer id, @Valid Lieu lieu) {
+    public Response updateLieu (@PathParam("id") Integer id, @Valid LieuDto lieuDto) {
         try {
             LieuEntity lieuEntity = lieuRepository.findById(id);
             RegionEntity regionEntity = regionRepository.findById(lieuEntity.getIdRegionEntity().getId());
@@ -85,7 +85,7 @@ public class LieuResource {
                         .entity("Cet identifiant n'existe pas !")
                         .build();
             }
-            lieuEntity.insertNewValues(lieu,regionEntity);
+            lieuEntity.insertNewValues(lieuDto,regionEntity);
             return Response.ok().entity("Lieu mis à jour")
                     .build();
         } catch (ConstraintViolationException e) {
