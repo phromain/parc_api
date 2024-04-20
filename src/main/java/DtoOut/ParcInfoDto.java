@@ -17,7 +17,13 @@ public class ParcInfoDto {
     private String presentationMax250;
     private String libelleTypeParc;
     private String nomRegion;
+    private Integer idRegion;
     private String urlImgPrez;
+    private boolean parkingGratuit;
+    private boolean restauration;
+    private boolean boutique;
+    private boolean sejour;
+
 
     public ParcInfoDto(ParcEntity parc) {
         this.idParc = parc.getId();
@@ -32,6 +38,11 @@ public class ParcInfoDto {
             break;
         }
         this.urlImgPrez = parc.getUrlImgParcPrez();
+        this.idRegion = parc.getIdLieuEntity().getIdRegionEntity().getId();
+        this.parkingGratuit = "Gratuit".equals(parc.getIdParkingEntity().getParking());
+        this.restauration = parc.getPointRestauration();
+        this.boutique = parc.getBoutique();
+        this.sejour = parc.getSejour();
     }
 
 }
