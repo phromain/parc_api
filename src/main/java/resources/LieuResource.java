@@ -19,7 +19,7 @@ import repositories.RegionRepository;
 import java.util.ArrayList;
 import java.util.List;
 
-@Path("/lieu")
+@Path("/lieux")
 
 public class LieuResource {
 

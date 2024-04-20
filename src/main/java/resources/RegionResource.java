@@ -24,7 +24,7 @@ import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
-@Path("/region")
+@Path("/regions")
 
 public class RegionResource {
 

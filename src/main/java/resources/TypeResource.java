@@ -19,7 +19,7 @@ import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
-@Path("/type")
+@Path("/types")
 
 public class TypeResource {
 
