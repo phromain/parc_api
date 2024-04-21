@@ -20,9 +20,12 @@ public class ParcInfoDto {
     private Integer idRegion;
     private String urlImgPrez;
     private boolean parkingGratuit;
+    private String parkingString;
     private boolean restauration;
     private boolean boutique;
     private boolean sejour;
+    private String prixAdulte;
+    private String prixEnfant;
 
 
     public ParcInfoDto(ParcEntity parc) {
@@ -40,9 +43,12 @@ public class ParcInfoDto {
         this.urlImgPrez = parc.getUrlImgParcPrez();
         this.idRegion = parc.getIdLieuEntity().getIdRegionEntity().getId();
         this.parkingGratuit = "Gratuit".equals(parc.getIdParkingEntity().getParking());
+        this.parkingString = parc.getIdParkingEntity().getParking();
         this.restauration = parc.getPointRestauration();
         this.boutique = parc.getBoutique();
         this.sejour = parc.getSejour();
+        this.prixAdulte = parc.getPrixAdulte();
+        this.prixEnfant = parc.getPrixEnfant();
     }
 
 }
