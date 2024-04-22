@@ -21,4 +21,13 @@ public class ParcRepository implements PanacheRepositoryBase<ParcEntity, Integer
             // Sinon, filtrer les parcs par type et région
             return list("SELECT p FROM ParcEntity p JOIN p.classerEntities c WHERE c.idType.id = ?1 and p.idLieuEntity.idRegionEntity.id = ?2", idType, idRegion);
         }
-    }}
+    }
+
+public ParcEntity findParcBySlug (String slugParc) {
+        ParcEntity parc = find("slug", slugParc).firstResult();
+                return parc;
+}
+
+
+
+}

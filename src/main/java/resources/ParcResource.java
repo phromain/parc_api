@@ -57,7 +57,7 @@ public class ParcResource {
         return Response.ok(listParcDto).build();
     }
 
-    @GET
+   /* @GET
     @Path("{idParc}")
     @Produces({MediaType.APPLICATION_JSON, (MediaType.TEXT_PLAIN)})
     @Operation(summary = "le détail d'un parc par son Id", description = "Retourne le détail d'un parc")
@@ -73,7 +73,25 @@ public class ParcResource {
         }
             ParcDetailDto parcDetail = new ParcDetailDto(parc);
             return Response.ok(parcDetail).build();
+        }*/
+
+    @GET
+    @Path("{slugParc}")
+    @Produces({MediaType.APPLICATION_JSON, (MediaType.TEXT_PLAIN)})
+    @Operation(summary = "le détail d'un parc par son slug", description = "Retourne le détail d'un parc")
+    @APIResponse(responseCode = "200", description = " Détail Parc")
+    @APIResponse(responseCode = "404", description = "Parc non trouvé")
+    public Response getParcBySlug (@PathParam("slugParc") String slugParc) {
+        ParcEntity parc = parcRepository.findParcBySlug(slugParc);
+        if (parc == null) {
+            return Response.status(Response.Status.NOT_FOUND)
+                    .type(MediaType.TEXT_PLAIN)
+                    .entity("Cet identifiant n'existe pas !")
+                    .build();
         }
+        ParcDetailDto parcDetail = new ParcDetailDto(parc);
+        return Response.ok(parcDetail).build();
+    }
 
 
     @GET
