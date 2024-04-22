@@ -76,6 +76,24 @@ public class ParcResource {
         }*/
 
     @GET
+    @Path("{idParc}/reseauxSociaux")
+    @Produces({MediaType.APPLICATION_JSON, (MediaType.TEXT_PLAIN)})
+    @Operation(summary = "Affiche les reseaux sociaux d un parc", description = "Affiche les reseaux sociaux d un parc")
+    @APIResponse(responseCode = "200", description = " Reseaux Sociaux trouvé")
+    @APIResponse(responseCode = "404", description = "Parc non trouvé")
+    public Response getReseauxSociauxByIdParc (@PathParam("idParc") int idParc) {
+        ParcEntity parc = parcRepository.findById(idParc);
+        if (parc == null) {
+            return Response.status(Response.Status.NOT_FOUND)
+                    .type(MediaType.TEXT_PLAIN)
+                    .entity("Cet identifiant n'existe pas !")
+                    .build();
+        }
+        List<Object[]> reseauxSociaux = parcRepository.getUrlAndSocialNetworkNameByParcId(idParc);
+        return Response.ok(reseauxSociaux).build();
+        }
+
+    @GET
     @Path("{slugParc}")
     @Produces({MediaType.APPLICATION_JSON, (MediaType.TEXT_PLAIN)})
     @Operation(summary = "le détail d'un parc par son slug", description = "Retourne le détail d'un parc")

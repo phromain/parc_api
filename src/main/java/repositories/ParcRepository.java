@@ -4,6 +4,9 @@ package repositories;
 import entities.ParcEntity;
 import io.quarkus.hibernate.orm.panache.PanacheRepositoryBase;
 import jakarta.enterprise.context.RequestScoped;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
+import jakarta.transaction.Transactional;
 
 import java.util.List;
 
@@ -28,6 +31,19 @@ public ParcEntity findParcBySlug (String slugParc) {
                 return parc;
 }
 
+    @PersistenceContext
+    EntityManager entityManager;
 
+    @Transactional
+    public List<Object[]> getUrlAndSocialNetworkNameByParcId(Integer parcId) {
+        String query = "SELECT u.urlReseau, r.libReseau " +
+                "FROM UrlReseauSociauxEntity u " +
+                "JOIN u.idReseauSociauxEntity r " +
+                "WHERE u.idParcEntity.id = :parcId";
+
+        return entityManager.createQuery(query, Object[].class)
+                .setParameter("parcId", parcId)
+                .getResultList();
+    }
 
 }
