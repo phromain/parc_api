@@ -57,8 +57,8 @@ public class ParcResource {
         return Response.ok(listParcDto).build();
     }
 
-   /* @GET
-    @Path("{idParc}")
+   @GET
+    @Path("{idParc}/idParc")
     @Produces({MediaType.APPLICATION_JSON, (MediaType.TEXT_PLAIN)})
     @Operation(summary = "le détail d'un parc par son Id", description = "Retourne le détail d'un parc")
     @APIResponse(responseCode = "200", description = " Détail Parc")
@@ -73,7 +73,7 @@ public class ParcResource {
         }
             ParcDetailDto parcDetail = new ParcDetailDto(parc);
             return Response.ok(parcDetail).build();
-        }*/
+        }
 
     @GET
     @Path("{idParc}/reseauxSociaux")
